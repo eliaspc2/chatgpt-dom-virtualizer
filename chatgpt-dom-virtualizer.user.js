@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT DOM Virtualizer
 // @namespace    https://github.com/eliaspc2/chatgpt-dom-virtualizer
-// @version      1.0.28
+// @version      1.0.29
 // @description  Keep a tiny live ChatGPT viewport, serialize turns to disk, and refill the rest from a persistent buffer.
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -24,7 +24,7 @@
     return;
   }
 
-  const SCRIPT_VERSION = "1.0.28";
+  const SCRIPT_VERSION = "1.0.29";
 
   const CONFIG = Object.freeze({
     initialTail: 2,
@@ -622,17 +622,17 @@
         }
         .panel[data-compact="false"] {
           --panel-radius: 20px;
-          width: min(440px, calc(100vw - 24px));
-          min-height: 360px;
-          max-height: min(72vh, 680px);
+          width: min(360px, calc(100vw - 24px));
+          min-height: 480px;
+          max-height: min(84vh, 760px);
         }
         .surface {
           display: none;
           position: relative;
           width: 100%;
           height: 100%;
-          padding: 12px 12px 52px;
-          gap: 10px;
+          padding: 10px 10px 50px;
+          gap: 8px;
         }
         .panel[data-compact="false"] .surface {
           display: grid;
