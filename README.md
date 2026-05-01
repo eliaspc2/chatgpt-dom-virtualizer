@@ -30,9 +30,9 @@ In practice, it keeps only a small live portion of the chat mounted in the page,
 
 - Small green dot in the bottom-right: compact launcher.
 - Click it once: open the compact panel.
-- Click `Detalhes`: show the diagnostic details.
-- Click `Atualizar`: ask CDV to rescan the current chat.
-- Click `Ir ao fim`: jump to the latest visible turn.
+- Click `Details`: show the diagnostic details.
+- Click `Refresh`: ask CDV to rescan the current chat.
+- Click `Go to end`: jump to the latest visible turn.
 
 ## Install
 
@@ -47,7 +47,7 @@ If you are using Chrome or Chromium and the manager shows a screen like the one 
 1. Open `chrome://extensions`.
 2. Turn on `Developer mode` if the browser is hiding advanced extension controls.
 3. Open the userscript manager details.
-4. Enable `Allow user scripts` / `Permitir scripts do utilizador` if it is currently off.
+4. Enable the userscript permission toggle if it is currently off.
 
 You do **not** need to load this repo as an unpacked extension. The only file you normally install is the userscript itself.
 

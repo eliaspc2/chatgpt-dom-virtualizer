@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT DOM Virtualizer
 // @namespace    https://github.com/eliaspc2/chatgpt-dom-virtualizer
-// @version      1.0.29
+// @version      1.0.30
 // @description  Keep a tiny live ChatGPT viewport, serialize turns to disk, and refill the rest from a persistent buffer.
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -24,7 +24,7 @@
     return;
   }
 
-  const SCRIPT_VERSION = "1.0.29";
+  const SCRIPT_VERSION = "1.0.30";
 
   const CONFIG = Object.freeze({
     initialTail: 2,
@@ -256,125 +256,125 @@
   function buildPhaseLabel(phase) {
     switch (phase) {
       case "ready":
-        return "Pronto";
+        return "Ready";
       case "booting":
-        return "A arrancar";
+        return "Booting";
       case "waiting-body":
-        return "A esperar pela pagina";
+        return "Waiting for page";
       case "waiting-composer":
-        return "A procurar a caixa de texto";
+        return "Looking for the text box";
       case "waiting-root":
-        return "A procurar a conversa";
+        return "Looking for the conversation";
       case "waiting-history":
-        return "A esperar pelas mensagens";
+        return "Waiting for messages";
       case "waiting-hydration":
-        return "A esperar pelo ChatGPT";
+        return "Waiting for ChatGPT";
       case "retrying":
-        return "A tentar de novo";
+        return "Retrying";
       case "error":
-        return "Com um problema";
+        return "Error";
       case "disabled":
-        return "Desligado";
+        return "Disabled";
       case "init":
-        return "A iniciar";
+        return "Initializing";
       default:
-        return "A trabalhar";
+        return "Working";
     }
   }
 
   function buildWindowSummary() {
     if (!state.records.length) {
-      return "Ainda nao encontrei mensagens para mostrar.";
+      return "No messages found yet.";
     }
 
     const visible = state.windowEnd >= state.windowStart ? state.windowEnd - state.windowStart + 1 : 0;
-    return `Estou a mostrar ${visible} de ${state.records.length} mensagens.`;
+    return `Showing ${visible} of ${state.records.length} messages.`;
   }
 
   function buildReasonLabel(reason) {
     switch (reason) {
       case "init":
-        return "arranque inicial";
+        return "initial startup";
       case "bootstrap":
-        return "arranque";
+        return "bootstrap";
       case "manual-refresh":
       case "overlay-refresh":
-        return "atualizacao manual";
+        return "manual refresh";
       case "manual-enable":
-        return "ativacao manual";
+        return "manual enable";
       case "manual-disable":
-        return "desativacao manual";
+        return "manual disable";
       case "route-change":
-        return "mudanca de conversa";
+        return "conversation change";
       case "startup-ready":
-        return "pagina pronta";
+        return "page ready";
       case "startup-fallback":
-        return "arranque em espera";
+        return "startup fallback";
       case "waiting-body":
-        return "ainda a esperar pela pagina";
+        return "still waiting for the page";
       case "waiting-composer":
-        return "ainda a procurar a caixa de texto";
+        return "still looking for the text box";
       case "waiting-root":
-        return "ainda a procurar a conversa";
+        return "still looking for the conversation";
       case "waiting-history":
-        return "ainda a esperar pelas mensagens";
+        return "still waiting for messages";
       case "waiting-hydration":
-        return "a pagina ainda esta a montar";
+        return "the page is still hydrating";
       case "native-jump":
-        return "a pedir ao ChatGPT para mostrar a ultima mensagem";
+        return "asking ChatGPT to show the latest message";
       case "retry":
-        return "nova tentativa";
+        return "retry";
       case "background-crawl":
-        return "leitura em fundo";
+        return "background crawl";
       case "background-scan":
-        return "descoberta de mensagens";
+        return "message discovery";
       case "history-scan":
-        return "descoberta do historico";
+        return "history discovery";
       case "scroll":
         return "scroll";
       case "input":
-        return "escrita na caixa";
+        return "typing in the box";
       case "mutation":
-        return "mudanca na pagina";
+        return "page change";
       case "detached-session":
-        return "estado antigo removido";
+        return "stale state removed";
       case "overlay-refresh":
-        return "atualizacao pelo painel";
+        return "panel refresh";
       case "indexedDB unavailable":
-        return "armazenamento local indisponivel";
+        return "local storage unavailable";
       case "indexedDB open failed":
-        return "falha ao abrir o armazenamento local";
+        return "failed to open local storage";
       case "indexedDB error":
-        return "erro no armazenamento local";
+        return "local storage error";
       case "indexedDB blocked":
-        return "armazenamento local bloqueado";
+        return "local storage blocked";
       case "unsupported-page":
-        return "pagina nao suportada";
+        return "unsupported page";
       default:
-        return reason || "sem detalhe";
+        return reason || "no details";
     }
   }
 
   function buildFailureLabel(failure) {
     const text = String(failure || "").trim();
     if (!text) {
-      return "Sem falhas recentes.";
+      return "No recent failures.";
     }
 
     const stage = text.split(":")[0].trim();
     switch (stage) {
       case "composer-not-found":
-        return "Nao encontrei a caixa de texto do ChatGPT.";
+        return "Could not find the ChatGPT text box.";
       case "conversation-root-not-found":
-        return "Encontrei a caixa de texto, mas nao a area principal da conversa.";
+        return "Found the text box, but not the main conversation area.";
       case "indexedDB unavailable":
-        return "O armazenamento local nao esta disponivel neste browser.";
+        return "Local storage is not available in this browser.";
       case "indexedDB open failed":
-        return "Nao consegui abrir o armazenamento local.";
+        return "Could not open local storage.";
       case "indexedDB error":
-        return "Houve um erro no armazenamento local.";
+        return "There was a local storage error.";
       case "indexedDB blocked":
-        return "O armazenamento local ficou bloqueado.";
+        return "Local storage is blocked.";
       default:
         return text;
     }
@@ -382,10 +382,10 @@
 
   function buildDiagnosticsSummary() {
     if (!state.enabled) {
-      return "O virtualizador esta desligado.";
+      return "The virtualizer is off.";
     }
     if (state.lastFailure) {
-      return "Encontrei um problema a arrancar.";
+      return "I hit a startup problem.";
     }
     if (!state.bootstrapped) {
       return `${buildPhaseLabel(state.runtimePhase)}.`;
@@ -396,20 +396,20 @@
   function buildDiagnosticsDetails() {
     const lines = [
       `${buildPhaseLabel(state.runtimePhase)}${state.runtimeDetail ? `: ${buildReasonLabel(state.runtimeDetail)}` : ""}`,
-      `Versao CDV: ${SCRIPT_VERSION}`,
-      `Conversa: ${state.conversationKey || "ainda nao identifiquei"}`,
-      `Caixa de texto: ${state.composerSummary || "ainda nao encontrei"}`,
-      `Conversa principal: ${state.rootSummary || "ainda nao encontrei"}`,
-      `Zona de scroll: ${state.scrollTargetSummary || "ainda nao encontrei"}`,
-      `Mensagens carregadas: ${state.records.length}`,
-      `Janela visivel: ${state.windowStart} a ${state.windowEnd}`,
-      `Scroll atual: ${Math.round(getScrollTop())} px`,
-      `DB local: ${state.dbReady ? "ativa" : "ainda a preparar"}`,
-      `Historico em fundo: ${!CONFIG.backgroundCrawlEnabled ? "desligado" : state.crawlRunning ? "em curso" : state.crawlExhausted ? "esgotado" : "parado"}`,
+      `CDV version: ${SCRIPT_VERSION}`,
+      `Conversation: ${state.conversationKey || "not identified yet"}`,
+      `Text box: ${state.composerSummary || "not found yet"}`,
+      `Main conversation: ${state.rootSummary || "not found yet"}`,
+      `Scroll area: ${state.scrollTargetSummary || "not found yet"}`,
+      `Messages loaded: ${state.records.length}`,
+      `Visible window: ${state.windowStart} to ${state.windowEnd}`,
+      `Current scroll: ${Math.round(getScrollTop())} px`,
+      `Local DB: ${state.dbReady ? "active" : "still preparing"}`,
+      `Background history: ${!CONFIG.backgroundCrawlEnabled ? "off" : state.crawlRunning ? "running" : state.crawlExhausted ? "exhausted" : "idle"}`,
     ];
 
     if (state.lastFailure) {
-      lines.push(`Ultimo problema: ${buildFailureLabel(state.lastFailure)}`);
+      lines.push(`Last problem: ${buildFailureLabel(state.lastFailure)}`);
     }
 
     return lines.join("\n");
@@ -523,7 +523,7 @@
       if (supported && !state.overlayHost) {
         installDiagnosticsOverlay();
         if (!state.enabled) {
-          setRuntimePhase("disabled", reason || "pagina suportada");
+          setRuntimePhase("disabled", reason || "supported page");
         }
       } else if (!supported) {
         removeDiagnosticsOverlay();
@@ -543,7 +543,7 @@
 
     installDiagnosticsOverlay();
     if (!state.enabled) {
-      setRuntimePhase("disabled", reason || "pagina suportada");
+      setRuntimePhase("disabled", reason || "supported page");
     }
     return true;
   }
@@ -794,16 +794,16 @@
             </div>
           </div>
           <div class="tools">
-            <button type="button" class="refresh tool tool--primary" title="Atualizar agora" aria-label="Atualizar agora">Atualizar</button>
-            <button type="button" class="scroll tool tool--ghost" title="Ir para a ultima mensagem" aria-label="Ir para a ultima mensagem">Ir ao fim</button>
-            <button type="button" class="toggle tool tool--subtle" title="Mostrar detalhes" aria-label="Mostrar detalhes">Detalhes</button>
+            <button type="button" class="refresh tool tool--primary" title="Refresh now" aria-label="Refresh now">Refresh</button>
+            <button type="button" class="scroll tool tool--ghost" title="Jump to the latest message" aria-label="Jump to the latest message">Go to end</button>
+            <button type="button" class="toggle tool tool--subtle" title="Show details" aria-label="Show details">Details</button>
           </div>
           <div class="body">
             <pre class="details"></pre>
           </div>
         </div>
         <div class="dock">
-          <button type="button" class="launcher launcher--outer" title="Abrir painel" aria-label="Abrir painel">
+          <button type="button" class="launcher launcher--outer" title="Open panel" aria-label="Open panel">
             <span class="dot" aria-hidden="true"></span>
           </button>
         </div>
@@ -880,14 +880,14 @@
     panel.dataset.phase = phase;
     panel.dataset.compact = state.overlayCompact ? "true" : "false";
     panel.dataset.expanded = state.overlayExpanded ? "true" : "false";
-    outerLauncher.title = state.overlayCompact ? "Abrir painel" : "Recolher painel";
+    outerLauncher.title = state.overlayCompact ? "Open panel" : "Collapse panel";
     outerLauncher.setAttribute("aria-label", outerLauncher.title);
-    scrollButton.title = "Ir para a ultima mensagem";
-    scrollButton.setAttribute("aria-label", "Ir para a ultima mensagem");
+    scrollButton.title = "Jump to the latest message";
+    scrollButton.setAttribute("aria-label", "Jump to the latest message");
     summaryNode.textContent = buildDiagnosticsSummary();
     detailsNode.textContent = buildDiagnosticsDetails();
-    toggleButton.textContent = state.overlayExpanded ? "Ocultar" : "Detalhes";
-    toggleButton.title = state.overlayExpanded ? "Ocultar detalhes" : "Mostrar detalhes";
+    toggleButton.textContent = state.overlayExpanded ? "Hide" : "Details";
+    toggleButton.title = state.overlayExpanded ? "Hide details" : "Show details";
     toggleButton.setAttribute("aria-label", toggleButton.title);
   }
 
