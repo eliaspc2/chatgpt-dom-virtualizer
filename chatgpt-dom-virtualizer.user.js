@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT DOM Virtualizer
 // @namespace    https://github.com/eliaspc2/chatgpt-dom-virtualizer
-// @version      1.0.30
+// @version      1.0.31
 // @description  Keep a tiny live ChatGPT viewport, serialize turns to disk, and refill the rest from a persistent buffer.
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -24,10 +24,10 @@
     return;
   }
 
-  const SCRIPT_VERSION = "1.0.30";
+  const SCRIPT_VERSION = "1.0.31";
 
   const CONFIG = Object.freeze({
-    initialTail: 2,
+    initialTail: 5,
     step: 2,
     backgroundCrawlEnabled: false,
     backgroundCrawlIdleMs: 3500,
