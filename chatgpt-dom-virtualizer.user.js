@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ChatGPT DOM Virtualizer
 // @namespace    https://github.com/eliaspc2/chatgpt-dom-virtualizer
-// @version      1.0.27
+// @version      1.0.28
 // @description  Keep a tiny live ChatGPT viewport, serialize turns to disk, and refill the rest from a persistent buffer.
 // @match        https://chatgpt.com/*
 // @match        https://chat.openai.com/*
@@ -24,7 +24,7 @@
     return;
   }
 
-  const SCRIPT_VERSION = "1.0.27";
+  const SCRIPT_VERSION = "1.0.28";
 
   const CONFIG = Object.freeze({
     initialTail: 2,
@@ -581,6 +581,7 @@
           box-sizing: border-box;
         }
         .panel {
+          --panel-radius: 20px;
           pointer-events: auto;
           color: #f3f6fb;
           font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
@@ -589,7 +590,13 @@
           background: rgba(18, 23, 31, 0.92);
           box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
           backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          background-clip: padding-box;
           overflow: hidden;
+          border-radius: var(--panel-radius);
+          clip-path: inset(0 round var(--panel-radius));
+          -webkit-clip-path: inset(0 round var(--panel-radius));
+          isolation: isolate;
         }
         .panel[data-phase="ready"] .dot {
           background: #39d98a;
@@ -609,15 +616,15 @@
           box-shadow: 0 0 0 4px rgba(143, 151, 163, 0.18);
         }
         .panel[data-compact="true"] {
+          --panel-radius: 12px;
           width: 40px;
           height: 40px;
-          border-radius: 12px;
         }
         .panel[data-compact="false"] {
+          --panel-radius: 20px;
           width: min(440px, calc(100vw - 24px));
           min-height: 360px;
           max-height: min(72vh, 680px);
-          border-radius: 20px;
         }
         .surface {
           display: none;
